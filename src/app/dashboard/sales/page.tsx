@@ -44,7 +44,7 @@ export default function SalesHistoryPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('http://localhost:3000/api/sales', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/sales`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed to load sales history');

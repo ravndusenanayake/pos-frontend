@@ -31,7 +31,7 @@ export default function DashboardIndexPage() {
     const fetchStats = async () => {
       if (!token) return;
       try {
-        const res = await fetch('http://localhost:3000/api/sales/stats', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/sales/stats`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
