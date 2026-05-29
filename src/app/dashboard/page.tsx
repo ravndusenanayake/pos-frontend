@@ -42,7 +42,9 @@ export default function DashboardIndexPage() {
           try {
             const errData = await res.json();
             if (errData.error) errorMsg += ` - ${errData.error}`;
-          } catch(e) {}
+          } catch {
+            // Ignore JSON parse errors for non-JSON responses
+          }
           throw new Error(errorMsg);
         }
         
