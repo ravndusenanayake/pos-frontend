@@ -70,7 +70,7 @@ export default function ProductsPage() {
     setError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/products`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to retrieve products database');
@@ -86,7 +86,7 @@ export default function ProductsPage() {
   const fetchCategories = async () => {
     if (!token) return;
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (res.ok) {
@@ -162,8 +162,8 @@ export default function ProductsPage() {
 
     try {
       const url = modalMode === 'ADD' 
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products`
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products/${editingId}`;
+        ? `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/products`
+        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/products/${editingId}`;
       const method = modalMode === 'ADD' ? 'POST' : 'PUT';
 
       const res = await fetch(url, {
@@ -203,7 +203,7 @@ export default function ProductsPage() {
     setSubmitError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products/${productToDelete.id}`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/products/${productToDelete.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

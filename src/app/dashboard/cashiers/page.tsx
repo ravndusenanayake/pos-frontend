@@ -41,7 +41,7 @@ export default function CashiersPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/users`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/users`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!res.ok) throw new Error('Failed to load users');
@@ -67,7 +67,7 @@ export default function CashiersPage() {
     setFormError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/users/cashiers`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/users/cashiers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

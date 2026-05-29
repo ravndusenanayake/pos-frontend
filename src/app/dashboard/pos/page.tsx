@@ -70,8 +70,8 @@ export default function PosPage() {
     setError(null);
     try {
       const [prodRes, catRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/products`, { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories`, { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/products`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
       
       if (!prodRes.ok) throw new Error('Failed to load products');
@@ -118,7 +118,7 @@ export default function PosPage() {
     };
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/sales`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/sales`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload)

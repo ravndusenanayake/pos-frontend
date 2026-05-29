@@ -48,7 +48,7 @@ export default function CategoriesPage() {
     setError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories`, {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to retrieve categories database');
@@ -101,8 +101,8 @@ export default function CategoriesPage() {
 
     try {
       const url = modalMode === 'ADD' 
-        ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories`
-        : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories/${editingId}`;
+        ? `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories`
+        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories/${editingId}`;
       
       const method = modalMode === 'ADD' ? 'POST' : 'PUT';
 
@@ -137,7 +137,7 @@ export default function CategoriesPage() {
     setSubmitError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/categories/${categoryToDelete.id}`, {
+      const res = await fetch(`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '')}/api/categories/${categoryToDelete.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
