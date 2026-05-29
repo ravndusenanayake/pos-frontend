@@ -455,8 +455,8 @@ export default function PosPage() {
               {/* Items listing */}
               <div className="space-y-1.5 py-2">
                 {successInvoice.items?.map((item) => (
-                  <div key={item.product_id} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50 last:border-0">
-                    <span className="text-slate-600 dark:text-slate-400"><span className="font-bold">{item.qty}x</span> {item.product.name}</span>
+                  <div key={item.id} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50 last:border-0">
+                    <span className="text-slate-600 dark:text-slate-400"><span className="font-bold">{item.qty}x</span> {item.product?.name}</span>
                     <span>LKR {Number(item.total).toFixed(2)}</span>
                   </div>
                 ))}
