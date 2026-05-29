@@ -188,7 +188,7 @@ export default function PosPage() {
               className="pl-9 bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 focus-visible:ring-emerald-500"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-2 xl:pb-0 hide-scrollbar flex-1">
+          <div className="flex flex-wrap gap-2 pb-2 xl:pb-0 flex-1">
             <Badge 
               onClick={() => setSelectedCategory(null)}
               className={`cursor-pointer px-6 py-3 whitespace-nowrap text-sm transition-colors ${selectedCategory === null ? 'bg-emerald-500 hover:bg-emerald-600 text-white dark:text-slate-950 font-bold' : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'}`}
