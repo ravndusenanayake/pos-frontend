@@ -232,9 +232,9 @@ export default function ProductsPage() {
     );
   }
 
-  const formatPrice = (p: string | number) => {
-    const num = Number(p);
-    return isNaN(num) ? '$0.00' : `$${num.toFixed(2)}`;
+  const formatPrice = (price: any) => {
+    const num = Number(price);
+    return isNaN(num) ? '₹0.00' : `₹${num.toFixed(2)}`;
   };
 
   const renderStockBadge = (product: Product) => {
@@ -407,8 +407,8 @@ export default function ProductsPage() {
               </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Unit Price ($)</Label>
+                  <div className="space-y-2">
+                    <Label className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Unit Price (₹)</Label>
                     <Input
                       type="number" step="0.01" min="0"
                       value={price}
