@@ -217,7 +217,7 @@ export default function PosPage() {
                         <p className="text-[10px] text-slate-500 leading-tight">{product.category?.name || 'Beverage'}</p>
                       </div>
                       <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                        ${Number(product.price).toFixed(2)}
+                        LKR {Number(product.price).toFixed(2)}
                       </span>
                     </div>
 
@@ -291,7 +291,7 @@ export default function PosPage() {
               <div className="space-y-3 pt-2">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
-                    <Label htmlFor="discount" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Discount (LKR )</Label>
+                    <Label htmlFor="discount" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Discount (LKR)</Label>
                     <Input id="discount" type="number" min="0" step="0.01" value={discount || ''} onChange={(e) => setDiscount(Number(e.target.value))} className="h-8 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs mt-1 text-slate-900 dark:text-slate-200 focus-visible:ring-emerald-500" />
                   </div>
                   <div>

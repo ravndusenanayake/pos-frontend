@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { DollarSign, ShoppingBag, Users, Package, TrendingUp } from 'lucide-react';
+import { Banknote, ShoppingBag, Users, Package, TrendingUp } from 'lucide-react';
 
 interface DashboardStats {
   todaySales: number;
@@ -99,7 +99,7 @@ export default function DashboardIndexPage() {
           <Card className="backdrop-blur-sm bg-white dark:bg-slate-900/50 border-slate-200 dark:border-slate-800/80 hover:border-emerald-300 dark:hover:border-emerald-500/50 hover:bg-slate-50 dark:hover:bg-slate-900/80 transition-all duration-300 shadow-sm dark:shadow-none">
             <CardContent className="p-6 flex items-center gap-4">
               <div className="h-14 w-14 rounded-2xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center border border-emerald-200 dark:border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-                <DollarSign className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
+                <Banknote className="h-7 w-7 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Today&apos;s Revenue</p>
