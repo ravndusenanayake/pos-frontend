@@ -38,7 +38,12 @@ export default function DashboardIndexPage() {
         });
         
         if (!res.ok) {
-          throw new Error('Failed to fetch dashboard statistics');
+          let errorMsg = `Failed to fetch dashboard statistics (Status: ${res.status})`;
+          try {
+            const errData = await res.json();
+            if (errData.error) errorMsg += ` - ${errData.error}`;
+          } catch(e) {}
+          throw new Error(errorMsg);
         }
         
         const data = await res.json();
