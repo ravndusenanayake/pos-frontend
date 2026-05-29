@@ -210,22 +210,25 @@ export default function PosPage() {
                     outOfStock ? 'opacity-50 cursor-not-allowed border-slate-100 dark:border-slate-950 bg-slate-50 dark:bg-slate-900/20' : 'hover:border-emerald-400 dark:hover:border-emerald-500/40 hover:bg-emerald-50/50 dark:hover:bg-slate-900/70 hover:scale-[1.02] shadow-sm hover:shadow-md dark:shadow-none'
                   }`}
                 >
-                  <CardContent className="p-4 flex flex-col justify-between h-full space-y-3">
-                    <div className="flex justify-end items-start">
-                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">${Number(product.price).toFixed(2)}</span>
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 line-clamp-1">{product.name}</h3>
-                      <p className="text-[10px] text-slate-500">{product.category?.name || 'Beverage'}</p>
+                  <CardContent className="p-3 flex flex-col justify-between h-full space-y-2">
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="flex-1">
+                        <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 line-clamp-1">{product.name}</h3>
+                        <p className="text-[10px] text-slate-500 leading-tight">{product.category?.name || 'Beverage'}</p>
+                      </div>
+                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
+                        ${Number(product.price).toFixed(2)}
+                      </span>
                     </div>
 
                     <div className="pt-2 border-t border-slate-100 dark:border-slate-900 text-[10px] text-slate-500 dark:text-slate-400 flex justify-between items-center">
-                      <span>Stock level:</span>
+                      <span>Stock:</span>
                       {product.product_type === 'RECIPE' ? (
                         <span className="italic text-slate-400 dark:text-slate-600">Recipe</span>
                       ) : (
-                        <span className={`font-bold ${product.quantity <= 5 ? 'text-yellow-600 dark:text-yellow-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{product.quantity} left</span>
+                        <span className={`font-bold ${product.quantity <= 5 ? 'text-yellow-600 dark:text-yellow-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
+                          {product.quantity}
+                        </span>
                       )}
                     </div>
                   </CardContent>
