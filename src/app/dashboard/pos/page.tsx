@@ -42,6 +42,8 @@ interface SuccessInvoice {
   subtotal: string | number;
   discount: string | number;
   total: string | number;
+  amountTendered?: number;
+  changeDue?: number;
 }
 
 export default function PosPage() {
@@ -63,6 +65,9 @@ export default function PosPage() {
 
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [successInvoice, setSuccessInvoice] = useState<SuccessInvoice | null>(null);
+  
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [amountTendered, setAmountTendered] = useState<string>('');
 
   const fetchCatalog = async () => {
     if (!token) return;
@@ -103,12 +108,21 @@ export default function PosPage() {
     });
   }, [products, searchQuery, selectedCategory]);
 
-  const handleCheckout = async () => {
+  const openPaymentModal = () => {
+    setAmountTendered('');
+    setIsPaymentModalOpen(true);
+  };
+
+  const processTransaction = async () => {
     if (!token || !user || cart.length === 0) return;
 
     setCheckoutLoading(true);
     setError(null);
     setSuccessInvoice(null);
+
+    const finalTotal = getTotal();
+    const tendered = Number(amountTendered);
+    const change = tendered - finalTotal;
 
     const payload = {
       cashier_id: user.id,
@@ -127,7 +141,14 @@ export default function PosPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Checkout transaction failed');
 
-      setSuccessInvoice(data.sale);
+      const invoiceToSave = { ...data.sale };
+      if (paymentMethod === 'CASH') {
+        invoiceToSave.amountTendered = tendered;
+        invoiceToSave.changeDue = change;
+      }
+
+      setSuccessInvoice(invoiceToSave);
+      setIsPaymentModalOpen(false);
       clearCart();
       fetchCatalog(); 
     } catch (err) {
@@ -321,16 +342,81 @@ export default function PosPage() {
               </div>
             </div>
 
-            <Button onClick={handleCheckout} disabled={checkoutLoading || cart.length === 0} className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-emerald-600 text-white dark:text-slate-950 dark:hover:from-emerald-400 dark:hover:to-emerald-500 font-bold shadow-md">
-              {checkoutLoading ? (
-                <div className="flex items-center gap-1.5"><div className="h-4 w-4 animate-spin rounded-full border-2 border-white dark:border-slate-950 border-t-transparent" /> Processing...</div>
-              ) : (
-                <div className="flex items-center gap-2"><CreditCard className="h-4.5 w-4.5" /> Complete Checkout</div>
-              )}
+            <Button onClick={openPaymentModal} disabled={checkoutLoading || cart.length === 0} className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-emerald-600 text-white dark:text-slate-950 dark:hover:from-emerald-400 dark:hover:to-emerald-500 font-bold shadow-md">
+              <div className="flex items-center gap-2"><CreditCard className="h-4.5 w-4.5" /> Proceed to Payment</div>
             </Button>
           </div>
         </Card>
       </div>
+
+      {/* Payment Processing Modal */}
+      {isPaymentModalOpen && (
+        <div className="lg:col-span-3 z-[90] fixed inset-0 flex items-center justify-center bg-slate-900/60 dark:bg-slate-950/90 backdrop-blur-md px-4">
+          <Card className="w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl relative border-emerald-500/20">
+            <CardHeader className="border-b border-slate-100 dark:border-slate-800">
+              <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-200">Process Payment</CardTitle>
+            </CardHeader>
+            <CardContent className="p-6 space-y-6">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <span className="text-slate-500 dark:text-slate-400 font-bold">Total Due</span>
+                <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">LKR {getTotal().toFixed(2)}</span>
+              </div>
+              
+              {paymentMethod === 'CASH' ? (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-bold text-slate-700 dark:text-slate-300">Amount Tendered (LKR)</Label>
+                    <Input 
+                      type="number" 
+                      autoFocus
+                      placeholder="e.g. 5000" 
+                      value={amountTendered} 
+                      onChange={(e) => setAmountTendered(e.target.value)} 
+                      className="h-14 text-xl font-bold text-slate-900 dark:text-white"
+                    />
+                  </div>
+                  
+                  {/* Quick Cash Buttons */}
+                  <div className="grid grid-cols-4 gap-2">
+                    <Button variant="outline" type="button" onClick={() => setAmountTendered(getTotal().toString())} className="text-xs">Exact</Button>
+                    <Button variant="outline" type="button" onClick={() => setAmountTendered('1000')} className="text-xs">+1000</Button>
+                    <Button variant="outline" type="button" onClick={() => setAmountTendered('5000')} className="text-xs">+5000</Button>
+                    <Button variant="outline" type="button" onClick={() => setAmountTendered('10000')} className="text-xs">+10000</Button>
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                    <span className="text-slate-500 font-bold">Change Due</span>
+                    <span className={`text-xl font-bold ${Number(amountTendered) >= getTotal() ? 'text-slate-800 dark:text-white' : 'text-red-500'}`}>
+                      LKR {Number(amountTendered) >= getTotal() ? (Number(amountTendered) - getTotal()).toFixed(2) : '0.00'}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-8 flex flex-col items-center justify-center text-center space-y-4">
+                  <CreditCard className="h-12 w-12 text-slate-400 animate-pulse" />
+                  <div>
+                    <p className="font-bold text-slate-800 dark:text-slate-200">Awaiting Terminal</p>
+                    <p className="text-sm text-slate-500">Please process the payment on your terminal</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-4 pt-2">
+                <Button variant="outline" onClick={() => setIsPaymentModalOpen(false)} className="flex-1 border-slate-200 dark:border-slate-800">
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={processTransaction} 
+                  disabled={checkoutLoading || (paymentMethod === 'CASH' && (amountTendered === '' || Number(amountTendered) < getTotal()))} 
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+                >
+                  {checkoutLoading ? 'Processing...' : 'Confirm Payment'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Invoice Receipt Print Popup */}
       {successInvoice && (
@@ -390,6 +476,18 @@ export default function PosPage() {
                   <span>Total</span>
                   <span>LKR {Number(successInvoice.total).toFixed(2)}</span>
                 </div>
+                {successInvoice.amountTendered !== undefined && (
+                  <>
+                    <div className="flex justify-between text-sm py-1 pt-3 text-slate-600 dark:text-slate-400 print:text-black">
+                      <span>Cash Tendered</span>
+                      <span>LKR {Number(successInvoice.amountTendered).toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm py-1 font-bold text-slate-800 dark:text-slate-200 print:text-black">
+                      <span>Change Due</span>
+                      <span>LKR {Number(successInvoice.changeDue).toFixed(2)}</span>
+                    </div>
+                  </>
+                )}
               </div>
               
               {/* Print Only Footer (Hidden on screen) */}

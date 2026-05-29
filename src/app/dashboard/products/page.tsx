@@ -232,7 +232,7 @@ export default function ProductsPage() {
     );
   }
 
-  const formatPrice = (price: any) => {
+  const formatPrice = (price: string | number) => {
     const num = Number(price);
     return isNaN(num) ? 'LKR 0.00' : `LKR ${num.toFixed(2)}`;
   };
