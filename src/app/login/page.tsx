@@ -58,7 +58,7 @@ export default function LoginPage() {
         login(data.token, data.user);
       } else {
         const text = await res.text();
-        throw new Error(`Server returned a webpage instead of data. Check your Vercel NEXT_PUBLIC_API_URL! Attempted to fetch: ${fetchUrl}`);
+        throw new Error(`Server returned a webpage instead of data. Check your Vercel NEXT_PUBLIC_API_URL! Attempted to fetch: ${fetchUrl}. Response snippet: ${text.substring(0, 100)}`);
       }
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Something went wrong. Please check your credentials.';
