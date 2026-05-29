@@ -104,7 +104,7 @@ export default function DashboardIndexPage() {
               <div>
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Today&apos;s Revenue</p>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mt-1">
-                  ₹{stats.todaySales.toFixed(2)}
+                  LKR {stats.todaySales.toFixed(2)}
                 </h3>
               </div>
             </CardContent>

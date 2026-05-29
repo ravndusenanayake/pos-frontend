@@ -265,7 +265,7 @@ export default function PosPage() {
                 <div key={item.product.id} className="flex justify-between items-center bg-slate-50 dark:bg-slate-950/40 p-3 rounded-lg border border-slate-100 dark:border-slate-900/60">
                   <div className="min-w-0 flex-1 mr-2">
                     <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1">{item.product.name}</h4>
-                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">₹{Number(item.product.price).toFixed(2)} each</p>
+                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">LKR {Number(item.product.price).toFixed(2)} each</p>
                   </div>
                   
                   <div className="flex items-center gap-2">
@@ -291,7 +291,7 @@ export default function PosPage() {
               <div className="space-y-3 pt-2">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
-                    <Label htmlFor="discount" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Discount (₹)</Label>
+                    <Label htmlFor="discount" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Discount (LKR )</Label>
                     <Input id="discount" type="number" min="0" step="0.01" value={discount || ''} onChange={(e) => setDiscount(Number(e.target.value))} className="h-8 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs mt-1 text-slate-900 dark:text-slate-200 focus-visible:ring-emerald-500" />
                   </div>
                   <div>
@@ -309,15 +309,15 @@ export default function PosPage() {
             <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 pt-2">
               <div className="flex justify-between">
                 <span>Total Items Bill:</span>
-                <span className="font-mono text-slate-800 dark:text-slate-200">₹{getSubtotal().toFixed(2)}</span>
+                <span className="font-mono text-slate-800 dark:text-slate-200">LKR {getSubtotal().toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-red-500 dark:text-red-400">
                 <span>Discount applied:</span>
-                <span className="font-mono">-₹{Number(discount).toFixed(2)}</span>
+                <span className="font-mono">-LKR {Number(discount).toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-bold text-sm text-slate-900 dark:text-slate-200 pt-1.5 border-t border-slate-200 dark:border-slate-900">
                 <span>Final Invoice Total:</span>
-                <span className="font-mono text-emerald-600 dark:text-emerald-400">₹{getTotal().toFixed(2)}</span>
+                <span className="font-mono text-emerald-600 dark:text-emerald-400">LKR {getTotal().toFixed(2)}</span>
               </div>
             </div>
 
@@ -371,7 +371,7 @@ export default function PosPage() {
                 {successInvoice.items?.map((item) => (
                   <div key={item.product_id} className="flex justify-between text-xs py-1 border-b border-slate-100 dark:border-slate-800/50 last:border-0">
                     <span className="text-slate-600 dark:text-slate-400"><span className="font-bold">{item.qty}x</span> {item.product.name}</span>
-                    <span>₹{Number(item.total).toFixed(2)}</span>
+                    <span>LKR {Number(item.total).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -380,15 +380,15 @@ export default function PosPage() {
               <div className="border-t border-slate-200 dark:border-slate-800 print:border-black pt-3 space-y-1">
                 <div className="flex justify-between text-sm py-1 text-slate-500 dark:text-slate-400">
                   <span>Subtotal</span>
-                  <span>₹{Number(successInvoice.subtotal).toFixed(2)}</span>
+                  <span>LKR {Number(successInvoice.subtotal).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm py-1 text-slate-500 dark:text-slate-400">
                   <span>Discount</span>
-                  <span>-₹{Number(successInvoice.discount).toFixed(2)}</span>
+                  <span>-LKR {Number(successInvoice.discount).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between font-bold text-lg pt-3 mt-2 border-t border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
                   <span>Total</span>
-                  <span>₹{Number(successInvoice.total).toFixed(2)}</span>
+                  <span>LKR {Number(successInvoice.total).toFixed(2)}</span>
                 </div>
               </div>
               

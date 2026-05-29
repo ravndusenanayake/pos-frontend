@@ -129,7 +129,7 @@ export default function SalesHistoryPage() {
                           </Badge>
                         </td>
                         <td className="px-6 py-4 font-bold text-slate-800 dark:text-slate-200">
-                          ₹{Number(sale.total).toFixed(2)}
+                          LKR {Number(sale.total).toFixed(2)}
                         </td>
                       </tr>
                       {expandedSale === sale.id && (
@@ -144,22 +144,22 @@ export default function SalesHistoryPage() {
                                       <span className="text-slate-600 dark:text-slate-300">
                                         <span className="text-emerald-600 dark:text-emerald-500 font-bold">{item.qty}x</span> {item.product?.name}
                                       </span>
-                                      <span className="text-slate-500 dark:text-slate-400 font-mono">₹{Number(item.total).toFixed(2)}</span>
+                                      <span className="text-slate-500 dark:text-slate-400 font-mono">LKR {Number(item.total).toFixed(2)}</span>
                                     </div>
                                   ))}
                                 </div>
                                 <div className="space-y-1 text-xs md:border-l md:border-slate-200 dark:md:border-slate-800 md:pl-4">
                                   <div className="flex justify-between items-center text-sm">
                                     <span className="text-slate-500 dark:text-slate-400">Subtotal</span>
-                                    <span className="font-mono">₹{Number(sale.subtotal).toFixed(2)}</span>
+                                    <span className="font-mono">LKR {Number(sale.subtotal).toFixed(2)}</span>
                                   </div>
                                   <div className="flex justify-between items-center text-sm">
                                     <span className="text-slate-500 dark:text-slate-400">Discount</span>
-                                    <span className="font-mono">-₹{Number(sale.discount).toFixed(2)}</span>
+                                    <span className="font-mono">-LKR {Number(sale.discount).toFixed(2)}</span>
                                   </div>
                                   <div className="flex justify-between items-center font-bold text-base pt-2 border-t border-slate-200 dark:border-slate-700">
                                     <span className="text-slate-900 dark:text-slate-100">Total</span>
-                                    <span className="font-mono">₹{Number(sale.total).toFixed(2)}</span>
+                                    <span className="font-mono">LKR {Number(sale.total).toFixed(2)}</span>
                                   </div>
                                 </div>
                               </div>
