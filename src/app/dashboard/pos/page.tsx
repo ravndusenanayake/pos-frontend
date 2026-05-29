@@ -178,8 +178,8 @@ export default function PosPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col xl:flex-row gap-4">
-          <div className="relative w-full xl:w-64 shrink-0">
+        <div className="flex flex-col gap-4">
+          <div className="relative w-full sm:w-80 shrink-0">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400 dark:text-slate-500" />
             <Input 
               placeholder="Search products..." 
