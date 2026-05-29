@@ -37,7 +37,9 @@ export default function LoginPage() {
     setLoadingSubmit(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/auth/login`, {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000').replace(/\/api\/?$/, '');
+      const fetchUrl = `${apiUrl}/api/auth/login`;
+      const res = await fetch(fetchUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,13 +47,19 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Authentication failed');
+        if (!res.ok) {
+          throw new Error(data.error || 'Authentication failed');
+        }
+
+        login(data.token, data.user);
+      } else {
+        const text = await res.text();
+        throw new Error(`Server returned a webpage instead of data. Check your Vercel NEXT_PUBLIC_API_URL! Attempted to fetch: ${fetchUrl}`);
       }
-
-      login(data.token, data.user);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Something went wrong. Please check your credentials.';
       setError(msg);
