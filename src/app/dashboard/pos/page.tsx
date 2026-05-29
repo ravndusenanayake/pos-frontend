@@ -191,7 +191,7 @@ export default function PosPage() {
           <div className="flex flex-wrap gap-2 pb-2 xl:pb-0 flex-1">
             <Badge 
               onClick={() => setSelectedCategory(null)}
-              className={`cursor-pointer px-6 py-3 whitespace-nowrap text-sm transition-colors ${selectedCategory === null ? 'bg-emerald-500 hover:bg-emerald-600 text-white dark:text-slate-950 font-bold' : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'}`}
+              className={`cursor-pointer px-6 py-2.5 rounded-full whitespace-nowrap text-sm font-bold shadow-sm transition-all duration-300 ${selectedCategory === null ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white dark:text-slate-950 shadow-emerald-500/30 ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-slate-950 scale-105' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:scale-105'}`}
             >
               All Categories
             </Badge>
@@ -199,7 +199,7 @@ export default function PosPage() {
               <Badge 
                 key={c.id}
                 onClick={() => setSelectedCategory(c.id)}
-                className={`cursor-pointer px-6 py-3 whitespace-nowrap text-sm transition-colors ${selectedCategory === c.id ? 'bg-emerald-500 hover:bg-emerald-600 text-white dark:text-slate-950 font-bold' : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800'}`}
+                className={`cursor-pointer px-6 py-2.5 rounded-full whitespace-nowrap text-sm font-bold shadow-sm transition-all duration-300 ${selectedCategory === c.id ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white dark:text-slate-950 shadow-emerald-500/30 ring-2 ring-emerald-500 ring-offset-2 dark:ring-offset-slate-950 scale-105' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 hover:scale-105'}`}
               >
                 {c.name}
               </Badge>
@@ -220,40 +220,48 @@ export default function PosPage() {
             No products match the selected filters.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredProducts.map((product) => {
               const outOfStock = product.product_type === 'FINISHED' && product.quantity <= 0;
               return (
-                <Card 
+                <div 
                   key={product.id}
                   onClick={() => !outOfStock && addToCart(product)}
-                  className={`backdrop-blur-sm bg-white dark:bg-slate-900/40 border-slate-200 dark:border-slate-900/80 transition-all duration-200 cursor-pointer overflow-hidden ${
-                    outOfStock ? 'opacity-50 cursor-not-allowed border-slate-100 dark:border-slate-950 bg-slate-50 dark:bg-slate-900/20' : 'hover:border-emerald-400 dark:hover:border-emerald-500/40 hover:bg-emerald-50/50 dark:hover:bg-slate-900/70 hover:scale-[1.02] shadow-sm hover:shadow-md dark:shadow-none'
+                  className={`group relative flex flex-col rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${
+                    outOfStock ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:-translate-y-1 hover:shadow-xl hover:shadow-emerald-500/10'
                   }`}
                 >
-                  <CardContent className="p-3 flex flex-col justify-between h-full space-y-2">
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="flex-1">
-                        <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 line-clamp-1">{product.name}</h3>
-                        <p className="text-[10px] text-slate-500 leading-tight">{product.category?.name || 'Beverage'}</p>
-                      </div>
-                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                        LKR {Number(product.price).toFixed(2)}
-                      </span>
+                  {/* Image Background */}
+                  <div className="w-full h-40 relative bg-slate-100 dark:bg-slate-800">
+                    {product.image ? (
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-5xl">🍹</div>
+                    )}
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    
+                    {/* Price Tag */}
+                    <div className="absolute top-2 right-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-2 py-1 rounded-lg shadow-sm">
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">LKR {Number(product.price).toFixed(0)}</span>
                     </div>
+                  </div>
 
-                    <div className="pt-2 border-t border-slate-100 dark:border-slate-900 text-[10px] text-slate-500 dark:text-slate-400 flex justify-between items-center">
-                      <span>Stock:</span>
+                  {/* Content (Glassmorphism effect) */}
+                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-white/20 dark:bg-slate-950/40 backdrop-blur-md border-t border-white/20 dark:border-slate-800/50">
+                    <h3 className="font-bold text-sm text-white drop-shadow-md line-clamp-1">{product.name}</h3>
+                    <div className="flex justify-between items-center mt-1">
+                      <p className="text-[10px] text-slate-200 drop-shadow">{product.category?.name || 'Beverage'}</p>
                       {product.product_type === 'RECIPE' ? (
-                        <span className="italic text-slate-400 dark:text-slate-600">Recipe</span>
+                         <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/80 text-white">Made to order</span>
                       ) : (
-                        <span className={`font-bold ${product.quantity <= 5 ? 'text-yellow-600 dark:text-yellow-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                          {product.quantity}
-                        </span>
+                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${product.quantity <= 5 ? 'bg-yellow-500/80' : 'bg-emerald-500/80'} text-white`}>
+                           {product.quantity} Left
+                         </span>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -262,44 +270,67 @@ export default function PosPage() {
 
       {/* 2. Cart & Checkout Details Panel */}
       <div className="space-y-6">
-        <Card className="backdrop-blur-md bg-white/90 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800/80 flex flex-col h-[75vh] sticky top-6 shadow-md dark:shadow-none">
-          <CardHeader className="border-b border-slate-100 dark:border-slate-900 px-6 py-4 flex flex-row items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ShoppingCart className="h-5 w-5 text-emerald-500 dark:text-emerald-400" />
-              <CardTitle className="text-lg font-bold text-slate-800 dark:text-slate-200">Active Cart</CardTitle>
+        <Card className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-slate-200/50 dark:border-slate-800/50 flex flex-col h-[80vh] sticky top-6 shadow-2xl shadow-slate-200/50 dark:shadow-none rounded-3xl overflow-hidden">
+          <CardHeader className="bg-gradient-to-r from-emerald-500/10 to-transparent border-b border-slate-100 dark:border-slate-800/50 px-6 py-5 flex flex-row items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 bg-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/30">
+                <ShoppingCart className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-lg font-black text-slate-800 dark:text-slate-100">Current Order</CardTitle>
+                <p className="text-xs text-slate-500 font-medium">{cart.length} items selected</p>
+              </div>
             </div>
             {cart.length > 0 && (
-              <Button variant="ghost" size="sm" onClick={clearCart} className="h-6 px-2 text-xs text-slate-500 hover:text-red-500 dark:hover:text-red-400">Clear</Button>
+              <Button variant="ghost" size="sm" onClick={clearCart} className="h-8 px-3 rounded-full text-xs font-bold text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors">Clear All</Button>
             )}
           </CardHeader>
 
           {/* Cart Items */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
             {cart.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500 text-center gap-2">
-                🍊
-                <p className="text-xs font-semibold">Active Cart is Empty</p>
-                <p className="text-[10px] text-slate-500 dark:text-slate-600 max-w-[180px]">Add items from catalog to start POS billing</p>
+              <div className="flex flex-col items-center justify-center h-full text-center gap-4 opacity-60">
+                <div className="h-24 w-24 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-4xl shadow-inner">
+                  🛒
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Your cart is empty</p>
+                  <p className="text-xs text-slate-500 max-w-[200px] mt-1">Tap any product to add it to the current order.</p>
+                </div>
               </div>
             ) : (
               cart.map((item) => (
-                <div key={item.product.id} className="flex justify-between items-center bg-slate-50 dark:bg-slate-950/40 p-3 rounded-lg border border-slate-100 dark:border-slate-900/60">
-                  <div className="min-w-0 flex-1 mr-2">
-                    <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1">{item.product.name}</h4>
-                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">LKR {Number(item.product.price).toFixed(2)} each</p>
+                <div key={item.product.id} className="group flex flex-col bg-white dark:bg-slate-950 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center gap-3">
+                      {item.product.image ? (
+                        <img src={item.product.image} alt={item.product.name} className="h-10 w-10 rounded-lg object-cover shadow-sm" />
+                      ) : (
+                        <div className="h-10 w-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-lg">🍹</div>
+                      )}
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 leading-tight">{item.product.name}</h4>
+                        <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">LKR {Number(item.product.price).toFixed(0)}</p>
+                      </div>
+                    </div>
+                    <span className="text-sm font-black text-slate-900 dark:text-white">
+                      LKR {(Number(item.product.price) * item.qty).toFixed(0)}
+                    </span>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    <button onClick={() => updateQty(item.product.id, -1)} className="h-5 w-5 rounded bg-white dark:bg-slate-900 flex items-center justify-center border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs">
-                      <Minus className="h-3 w-3" />
+                  <div className="flex items-center justify-between mt-1">
+                    <button onClick={() => removeFromCart(item.product.id)} className="text-xs font-bold text-red-400 hover:text-red-500 flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Trash2 className="h-3.5 w-3.5 mr-1" /> Remove
                     </button>
-                    <span className="text-xs font-bold w-4 text-center text-slate-800 dark:text-slate-200">{item.qty}</span>
-                    <button onClick={() => updateQty(item.product.id, 1)} className="h-5 w-5 rounded bg-white dark:bg-slate-900 flex items-center justify-center border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 text-xs">
-                      <Plus className="h-3 w-3" />
-                    </button>
-                    <button onClick={() => removeFromCart(item.product.id)} className="h-5 w-5 text-red-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded flex items-center justify-center text-xs ml-1 transition-colors">
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
+                    <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-full p-1 shadow-inner ml-auto">
+                      <button onClick={() => updateQty(item.product.id, -1)} className="h-6 w-6 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center shadow-sm text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                        <Minus className="h-3 w-3" />
+                      </button>
+                      <span className="text-xs font-black w-8 text-center text-slate-800 dark:text-slate-100">{item.qty}</span>
+                      <button onClick={() => updateQty(item.product.id, 1)} className="h-6 w-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-sm shadow-emerald-500/30 hover:bg-emerald-600 transition-colors">
+                        <Plus className="h-3 w-3" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))
@@ -307,43 +338,42 @@ export default function PosPage() {
           </div>
 
           {/* Checkout Calculations */}
-          <div className="p-6 border-t border-slate-100 dark:border-slate-900 bg-slate-50 dark:bg-slate-950/40 space-y-4 rounded-b-xl">
+          <div className="p-6 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 rounded-b-3xl space-y-5">
             {cart.length > 0 && (
-              <div className="space-y-3 pt-2">
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="discount" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Discount (LKR)</Label>
-                    <Input id="discount" type="number" min="0" step="0.01" value={discount || ''} onChange={(e) => setDiscount(Number(e.target.value))} className="h-8 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-xs mt-1 text-slate-900 dark:text-slate-200 focus-visible:ring-emerald-500" />
-                  </div>
-                  <div>
-                    <Label htmlFor="payment" className="text-[10px] text-slate-500 dark:text-slate-400 font-bold">Payment Method</Label>
-                    <select id="payment" value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="w-full h-8 rounded-md bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs mt-1 px-2.5 text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-emerald-500">
-                      <option value="CASH">Cash</option>
-                      <option value="CARD">Debit / Credit</option>
-                      <option value="MOBILE">Mobile Pay</option>
-                    </select>
-                  </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="discount" className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Discount (LKR)</Label>
+                  <Input id="discount" type="number" min="0" step="0.01" value={discount || ''} onChange={(e) => setDiscount(Number(e.target.value))} className="h-10 rounded-xl bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 font-bold text-slate-900 dark:text-slate-200 focus-visible:ring-emerald-500 shadow-sm" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="payment" className="text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Method</Label>
+                  <select id="payment" value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="w-full h-10 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 px-3 font-bold text-slate-900 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm appearance-none">
+                    <option value="CASH">Cash 💵</option>
+                    <option value="CARD">Card 💳</option>
+                    <option value="MOBILE">Mobile 📱</option>
+                  </select>
                 </div>
               </div>
             )}
 
-            <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 pt-2">
-              <div className="flex justify-between">
-                <span>Total Items Bill:</span>
-                <span className="font-mono text-slate-800 dark:text-slate-200">LKR {getSubtotal().toFixed(2)}</span>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <span>Subtotal</span>
+                <span>LKR {getSubtotal().toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-red-500 dark:text-red-400">
-                <span>Discount applied:</span>
-                <span className="font-mono">-LKR {Number(discount).toFixed(2)}</span>
+              <div className="flex justify-between text-sm text-red-500 dark:text-red-400 font-medium">
+                <span>Discount</span>
+                <span>-LKR {Number(discount).toFixed(2)}</span>
               </div>
-              <div className="flex justify-between font-bold text-sm text-slate-900 dark:text-slate-200 pt-1.5 border-t border-slate-200 dark:border-slate-900">
-                <span>Final Invoice Total:</span>
-                <span className="font-mono text-emerald-600 dark:text-emerald-400">LKR {getTotal().toFixed(2)}</span>
+              <div className="flex justify-between items-end pt-3 border-t border-slate-200 dark:border-slate-800">
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">Total to Pay</span>
+                <span className="text-3xl font-black text-emerald-600 dark:text-emerald-400 drop-shadow-sm">LKR {getTotal().toFixed(0)}</span>
               </div>
             </div>
 
-            <Button onClick={openPaymentModal} disabled={checkoutLoading || cart.length === 0} className="w-full bg-emerald-600 hover:bg-emerald-700 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-emerald-600 text-white dark:text-slate-950 dark:hover:from-emerald-400 dark:hover:to-emerald-500 font-bold shadow-md">
-              <div className="flex items-center gap-2"><CreditCard className="h-4.5 w-4.5" /> Proceed to Payment</div>
+            <Button onClick={openPaymentModal} disabled={checkoutLoading || cart.length === 0} className="w-full h-14 text-lg rounded-2xl bg-emerald-600 hover:bg-emerald-500 dark:bg-gradient-to-r dark:from-emerald-500 dark:to-emerald-400 text-white font-black shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:-translate-y-0.5 transition-all">
+              <CreditCard className="h-5 w-5 mr-2" /> 
+              Charge LKR {getTotal().toFixed(0)}
             </Button>
           </div>
         </Card>
