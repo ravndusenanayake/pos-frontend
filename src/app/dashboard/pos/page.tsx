@@ -252,13 +252,6 @@ export default function PosPage() {
                     <h3 className="font-bold text-sm text-white drop-shadow-md line-clamp-1">{product.name}</h3>
                     <div className="flex justify-between items-center mt-1">
                       <p className="text-[10px] text-slate-200 drop-shadow">{product.category?.name || 'Beverage'}</p>
-                      {product.product_type === 'RECIPE' ? (
-                         <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-500/80 text-white">Made to order</span>
-                      ) : (
-                         <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${product.quantity <= 5 ? 'bg-yellow-500/80' : 'bg-emerald-500/80'} text-white`}>
-                           {product.quantity} Left
-                         </span>
-                      )}
                     </div>
                   </div>
                 </div>
